@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const packageDetails = () => {
+const tasks = () => {
   return (
     <View>
-      <Text>packageDetails</Text>
+      <Text>tasks</Text>
     </View>
   )
 }
 
-export default packageDetails
+export default tasks
 
 const styles = StyleSheet.create({})

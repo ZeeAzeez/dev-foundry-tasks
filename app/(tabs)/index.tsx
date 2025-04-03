@@ -10,9 +10,8 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Link href="/packageDetails">Package Details</Link>
+      <Text className="font-bold text-2xl my-10">Home Page</Text>
       <Link href="/profile"> Profile Page</Link>
-      <Link href="/message">Messages</Link>
     </View>
   );
 }
