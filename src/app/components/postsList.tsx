@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: 10,
-      paddingHorizontal: 15,
+      paddingHorizontal: 5,
       backgroundColor: 'white',
     },
     iconBox: {
