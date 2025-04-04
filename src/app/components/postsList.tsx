@@ -2,13 +2,17 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import posts from '../../assets/data/posts.json';
 import {formatDistanceToNowStrict} from 'date-fns';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from "react";
+import { Post } from "@/src/types/type";
 
 
-export default function postsList(){
-    const post = posts[0];
-
+type PostListProps= {
+  post: Post; 
+}
+export default function PostsList({ post }: PostListProps){
+    // const post = posts[0];
     return(
-       <View style={styles.headerContainer}>
+      <View style={styles.headerContainer}>
              <View style={styles.rowContainer}>
                <Image source={{ uri: post.group.image }} style={styles.groupImage} />
                <Text style={styles.groupName}>{post.group.name}</Text>
@@ -33,7 +37,6 @@ export default function postsList(){
              </Text>
              )}
              
-       
              {/* Footer */}
              <View style={styles.footerContainer}>
          {/* Upvote & Downvote */}
@@ -56,11 +59,8 @@ export default function postsList(){
            <MaterialCommunityIcons name="share-outline" size={19} color="black" style={styles.bookmarkIcon} />
          </View>
        </View>
-       
-       
-       
            </View> 
-    );
+    )
 }
 
 
