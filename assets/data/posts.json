@@ -9,7 +9,7 @@
         "image": "https://images.pexels.com/photos/2325447/pexels-photo-2325447.jpeg?auto=compress&cs=tinysrgb&w=1200",
         "group": {
             "id": 1,
-            "name": "Group A",
+            "name": "r/frontend Developers",
             "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200"
         },
         "user":{
@@ -28,7 +28,7 @@
          "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200",
         "group": {
             "id": 2,
-            "name": "Group B",
+            "name": "r/backend Developers",
             "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200"
         },
         "user":{
@@ -47,7 +47,7 @@
          "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200",
         "group": {
             "id": 3,
-            "name": "Group C",
+            "name": "r/cyber security",
              "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200"
         },
         "user":{
@@ -66,7 +66,7 @@
         "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200",
         "group": {
             "id": 4,
-            "name": "Group D",
+            "name": "r/software testers",
              "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200"
         },
         "user":{
@@ -85,7 +85,7 @@
         "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200",
         "group": {
             "id": 5,
-            "name": "Group E",
+            "name": "r/Artists",
              "image": "https://images.pexels.com/photos/1386604/pexels-photo-1386604.jpeg?auto=compress&cs=tinysrgb&w=1200"
         },
         "user":{
