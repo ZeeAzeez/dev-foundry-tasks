@@ -1,154 +1,205 @@
-import { Text, View, Image, StyleSheet } from "react-native";
-import posts from '../../assets/data/posts.json';
-import {formatDistanceToNowStrict} from 'date-fns';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
-import { Post } from "@/src/types/type";
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  TextInput,
+} from 'react-native';
+import { formatDistanceToNowStrict } from 'date-fns';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Post } from '@/src/types/type';
 
+type Props = {
+  post: Post;
+};
 
-type PostListProps= {
-  post: Post; 
-}
-export default function PostsList({ post }: PostListProps){
-    // const post = posts[0];
-    return(
-      <View style={styles.headerContainer}>
-             <View style={styles.rowContainer}>
-               <Image source={{ uri: post.group.image }} style={styles.groupImage} />
-               <Text style={styles.groupName}>{post.group.name}</Text>
-       
-               <Text style={styles.timestamp}>
-                 {formatDistanceToNowStrict(new Date(post.created_at))}
-               </Text>
-       
-               <View style={styles.followContainer}>
-                 <Text style={styles.followButton}>Follow</Text>
-               </View>
-             </View>
-       
-             {/* content */}
-             <Text style={styles.postTitle}>{post.title}</Text>
-             {post.image && (
-               <Image source={{ uri: post.image }} style={styles.postImage} />
-             )}
-             {!post.image && post.description && (
-               <Text numberOfLines={4} style={styles.postDescription}>
-               {post.description}
-             </Text>
-             )}
-             
-             {/* Footer */}
-             <View style={styles.footerContainer}>
-         {/* Upvote & Downvote */}
-         <View style={styles.iconBox}>
-           <MaterialCommunityIcons name="arrow-up-bold-outline" size={19} color="black" />
-           <Text style={styles.iconText}>{post.upvotes}</Text>
-           <View style={styles.divider} />
-           <MaterialCommunityIcons name="arrow-down-bold-outline" size={19} color="black" />
-         </View>
-       
-         {/* Comments */}
-         <View style={styles.iconBox}>
-           <MaterialCommunityIcons name="comment-outline" size={19} color="black" />
-           <Text style={styles.iconText}>{post.nr_of_comments}</Text>
-         </View>
-       
-         {/* Bookmark & Share */}
-         <View style={styles.bookShareContainer}>
-           <MaterialCommunityIcons name="bookmark-outline" size={19} color="black" style={styles.bookmarkIcon} />
-           <MaterialCommunityIcons name="share-outline" size={19} color="black" style={styles.bookmarkIcon} />
-         </View>
-       </View>
-           </View> 
-    )
-}
+const PostsList: React.FC<Props> = ({ post }) => {
+  const [upvotes, setUpvotes] = useState(post.upvotes);
+  const [downvotes, setDownvotes] = useState(0);
+  const [comments, setComments] = useState<string[]>(post.comments || []);
+  const [commentText, setCommentText] = useState('');
+  const [bookmarked, setBookmarked] = useState(false);
 
+  const handleUpvote = () => setUpvotes((prev) => prev + 1);
+  const handleDownvote = () => setDownvotes((prev) => prev + 1);
+  const handleBookmark = () => setBookmarked((prev) => !prev);
+  const handleComment = () => {
+    if (commentText.trim()) {
+      setComments([...comments, commentText]);
+      setCommentText('');
+    }
+  };
+  const handleRepost = () => {
+    console.log('Repost pressed!');
+    // Connect to backend later
+  };
+
+  return (
+    <View style={styles.card}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Image source={{ uri: post.group.image }} style={styles.groupImage} />
+        <Text style={styles.groupText}>{post.group.name}</Text>
+        <Text style={styles.time}>
+          {formatDistanceToNowStrict(new Date(post.created_at))} ago
+        </Text>
+      </View>
+
+      {/* Title & Image */}
+      <Text style={styles.title}>{post.title}</Text>
+      {post.image && (
+        <Image source={{ uri: post.image }} style={styles.postImage} />
+      )}
+      {post.description && <Text style={styles.desc}>{post.description}</Text>}
+
+      {/* Footer */}
+      <View style={styles.footer}>
+        {/* Upvote */}
+        <View style={styles.iconBox}>
+          <Pressable onPress={handleUpvote}>
+            <MaterialCommunityIcons name="arrow-up-bold-outline" size={19} />
+          </Pressable>
+          <Text style={styles.iconText}>{upvotes}</Text>
+        </View>
+
+        {/* Downvote */}
+        <View style={styles.iconBox}>
+          <Pressable onPress={handleDownvote}>
+            <MaterialCommunityIcons name="arrow-down-bold-outline" size={19} />
+          </Pressable>
+          <Text style={styles.iconText}>{downvotes}</Text>
+        </View>
+
+        {/* Comment */}
+        <View style={styles.iconBox}>
+          <MaterialCommunityIcons name="comment-outline" size={19} />
+          <Text style={styles.iconText}>{comments.length}</Text>
+        </View>
+
+        {/* Bookmark + Repost */}
+        <View style={styles.actionIcons}>
+          <Pressable onPress={handleBookmark} style={styles.roundButton}>
+            <MaterialCommunityIcons
+              name={bookmarked ? 'bookmark' : 'bookmark-outline'}
+              size={19}
+            />
+          </Pressable>
+          <Pressable onPress={handleRepost} style={styles.roundButton}>
+            <MaterialCommunityIcons name="share-outline" size={19} />
+          </Pressable>
+        </View>
+      </View>
+
+      {/* Comment input */}
+      <View style={styles.commentBox}>
+        <TextInput
+          placeholder="Add a comment..."
+          value={commentText}
+          onChangeText={setCommentText}
+          style={styles.commentInput}
+        />
+        <Pressable onPress={handleComment}>
+          <MaterialCommunityIcons name="send" size={20} color="#3B82F6" />
+        </Pressable>
+      </View>
+
+      {/* Display comments */}
+      {comments.map((c, i) => (
+        <Text key={i} style={styles.comment}>
+          - {c}
+        </Text>
+      ))}
+    </View>
+  );
+};
+
+export default PostsList;
 
 const styles = StyleSheet.create({
-    headerContainer: {
-      paddingHorizontal: 15,
-      paddingVertical: 10,
-      backgroundColor: 'white',
-      borderBottomWidth: 1,
-      borderBottomColor: '#e5e5e5',
-    },
-    rowContainer: {
-      flexDirection: 'row',
-      gap: 10,
-    },
-    groupImage: {
-      width: 20,
-      height: 20,
-      borderRadius: 10,
-    },
-    groupName: {
-      fontWeight: 'bold',
-    },
-    timestamp: {
-      color: 'grey',
-    },
-    followContainer: {
-      marginLeft: 'auto',
-    },
-    followButton: {
-      backgroundColor: '#0d469b',
-      color: 'white',
-      paddingVertical: 2,
-      paddingHorizontal: 7,
-      borderRadius: 7,
-      fontWeight: 'bold',
-    },
-    postTitle: {
-      fontWeight: 'bold',
-      fontSize: 17,
-      letterSpacing: 0.5,
-      marginTop: 10,
-    },
-    postImage: {
-      width: '100%',
-      aspectRatio: 4 / 3,
-      borderRadius: 15,
-      marginVertical: 10,
-    },
-    postDescription: {
-      fontSize: 14,
-      lineHeight: 20,
-      color: '#333',
-    },
-    footerContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 10,
-      paddingHorizontal: 5,
-      backgroundColor: 'white',
-    },
-    iconBox: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: '#f3f3f3',
-      paddingVertical: 5,
-      paddingHorizontal: 10,
-      borderRadius: 20,
-      marginRight: 10,
-    },
-    iconText: {
-      fontWeight: '500',
-      marginLeft: 5,
-    },
-    divider: {
-      width: 1,
-      height: 14,
-      backgroundColor: '#D4D4D4',
-      marginHorizontal: 7,
-    },
-    bookShareContainer: {
-      flexDirection: 'row',
-      gap: 10,
-      marginLeft: 'auto',
-    },
-    bookmarkIcon: {
-      backgroundColor: '#f3f3f3',
-      padding: 6,
-      borderRadius: 20,
-    },
-  });
+  card: {
+    backgroundColor: '#fff',
+    marginBottom: 15,
+    borderRadius: 10,
+    padding: 12,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 8,
+  },
+  groupImage: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+  },
+  groupText: {
+    fontWeight: 'bold',
+    flex: 1,
+  },
+  time: {
+    color: 'gray',
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  postImage: {
+    width: '100%',
+    aspectRatio: 4 / 3,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  desc: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 8,
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 5,
+  },
+  iconBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f3f3f3',
+    padding: 6,
+    borderRadius: 20,
+    gap: 5,
+  },
+  iconText: {
+    fontWeight: '500',
+  },
+  actionIcons: {
+    flexDirection: 'row',
+    gap: 10,
+    marginLeft: 'auto',
+  },
+  roundButton: {
+    padding: 6,
+    backgroundColor: '#f3f3f3',
+    borderRadius: 20,
+  },
+  commentBox: {
+    flexDirection: 'row',
+    marginTop: 10,
+    gap: 10,
+    alignItems: 'center',
+  },
+  commentInput: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+    padding: 8,
+    borderRadius: 10,
+  },
+  comment: {
+    marginTop: 5,
+    fontSize: 13,
+    color: '#444',
+  },
+});

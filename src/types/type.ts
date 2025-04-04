@@ -1,15 +1,23 @@
 export type Post = {
-    id: number;
-    title: string;
-    description: string | null;
-    image: string | null;
-    created_at: string;
-    upvotes: number;
-    nr_of_comments: number;
-    group: Group;
-    user: User;
+  id: number;
+  title: string;
+  description: string;
+  image: string | null;
+  created_at: string;
+  upvotes: number;
+  downvotes: number;
+  nr_of_comments: number;
+  group: {
+    name: string;
+    image: string;
   };
-  
+  user: {
+    name: string;
+    image: string | null;
+  };
+  comments?: string[];
+};
+
   export type Comment = {
     id: number;
     post_id: number;
